@@ -1,0 +1,25 @@
+{
+  "name": "hexagon",
+  "version": "0.0.1",
+  "author": {
+    "name": "Nils Ceberg",
+    "email": "nils.ceberg@gmail.com"
+  },
+  "main": "build/main.js",
+  "scripts": {
+    "start": "node build/main.js",
+    "build": "tsc",
+    "start-dev": "npm run build && npm start"
+  },
+  "dependencies": {
+    "axel": "0.0.3",
+    "color": "^2.0.0",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/axel": "0.0.0",
+    "@types/color": "^2.0.0",
+    "@types/uuid": "^3.4.2",
+    "source-map-support": "^0.5.0"
+  }
+}

@@ -6,17 +6,19 @@ import Player from "./game/Player";
 import TerminalRenderer from "./graphics/TerminalRenderer";
 
 import { strategy as AggressiveBot } from "./strategy/bots/Aggressive";
+import { strategy as TacoBot } from "./strategy/bots/Taco";
+import { strategy as NoahBot } from "./strategy/bots/Noah";
 
 
 class Main {
 	async start() {
 		let renderer = new TerminalRenderer();
 
-		let game = new Game([
-			new Player(AggressiveBot),
-			new Player(AggressiveBot),
-			new Player(AggressiveBot)
-		]);
+		let game = new Game({
+			Aggressive: AggressiveBot,
+			noahshitbot: NoahBot,
+			TaconsLag: TacoBot,
+		});
 
 
 		await renderer.render(game.board);

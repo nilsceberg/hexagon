@@ -3,17 +3,22 @@ import Board from "./Board";
 import Cell from "./Cell";
 import Player from "./Player";
 import * as Constants from "./Constants";
+import * as Interface from "../strategy/Interface";
 
 
 export default class Game {
 	board: Board;
 	players: Player[];
 	
-	constructor(players: Player[]) {
-		this.players = players;
-		this.board = new Board(6);
+	constructor(strategies: {[name: string]: Interface.Strategy}) {
+		this.players = [];
+		let playerNumber = 1;
+		for(let name in strategies) {
+			this.players.push(new Player(name, strategies[name], playerNumber++, Object.keys(strategies).length));
+		}
 
-		this.board.placePlayers(players);
+		this.board = new Board(6);
+		this.board.placePlayers(this.players);
 	}
 
 	turn(): Player {

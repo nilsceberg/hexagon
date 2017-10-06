@@ -1,4 +1,6 @@
 import Cell from "./Cell";
+import Player from "./Player";
+import * as Constants from "./Constants";
 import pos, { Position } from "./Position";
 
 
@@ -40,12 +42,14 @@ export default class Board {
 		);
 	}
 
-	get mirrors(): Position[] {
-		return [0, 1, 2, 3, 4, 5].map(n => this.mirror.rotate(n));
+	placePlayers(players: Player[]) {
+		const cell = this.getCellAt(pos(0,0,0));
+		cell.owner = players[0];
+		cell.resources = Constants.STARTING_RESOURCES;
 	}
 
 	wrap(position: Position): Position {
-		const enteredMirror = this.mirrors.find(center => center.distance(position) <= this.radius);
+		const enteredMirror = this.mirror.rotations.find(center => center.distance(position) <= this.radius);
 
 		if (enteredMirror) {
 			return position.subtract(enteredMirror);
@@ -66,5 +70,15 @@ export default class Board {
 
 	getMapSize(): number {
 		return this.radius;
+	}
+
+	get positions(): Position[] {
+		let positions: Position[] = [];
+		for(let c in this.map) {
+			for(let r in this.map[c]) {
+				positions.push(Position.fromAxial(Number(c), Number(r)));
+			}
+		}
+		return positions;
 	}
 }

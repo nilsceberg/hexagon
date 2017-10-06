@@ -1,29 +1,32 @@
 require('source-map-support').install();
 
 import pos from "./game/Position";
-import Board from "./game/Board";
+import Game from "./game/Game";
 import Player from "./game/Player";
 import TerminalRenderer from "./graphics/TerminalRenderer";
+
+import { strategy as AggressiveBot } from "./strategy/bots/Aggressive";
 
 
 class Main {
 	async start() {
-		let board = new Board(6);
 		let renderer = new TerminalRenderer();
 
-		let player1 = new Player();
-		let player2 = new Player();
+		let testPlayer = new Player(AggressiveBot);
+		let game = new Game([testPlayer]);
 
-		board.getCellAt(pos(0, 0, 0)).owner = player1;
 
-		let p = pos(0, 0, 0);
-
+		await renderer.render(game.board);
 		while(true) {
-			await renderer.render(board);
-			await this.sleep(1000);
-			p = board.wrap(p.southEast);
-			board.getCellAt(p).owner = player1;
-			//board.getCellAt(p.rotate()).owner = player1;
+			let winner = game.turn();
+
+			if(winner) {
+				console.log("Winner:", winner);
+				break;
+			}
+
+			await renderer.render(game.board);
+			await this.sleep(10);
 		}
 
 		//process.stdin.on("data", () => { process.exit(0); });

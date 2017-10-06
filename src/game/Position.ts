@@ -4,6 +4,17 @@ export class Position {
 		this._y = y;
 		this._z = z;
 	}
+	
+	static fromAxial(c: number, r: number) {
+		return pos(c, r, -c-r);
+	}
+
+	get axial(): { c: number, r: number } {
+		return {
+			c: this._x,
+			r: this._y
+		};
+	}
 
 	get x(): number {
 		return this._x;
@@ -60,13 +71,6 @@ export class Position {
 		];
 	}
 
-	get axial(): { c: number, r: number } {
-		return {
-			c: this._x,
-			r: this._y
-		};
-	}
-
 	rotate(n: number = 1): Position {
 		if (n === 0) {
 			return this;
@@ -74,6 +78,10 @@ export class Position {
 		else {
 			return pos(-this.z, -this.x, -this.y).rotate(n - 1);
 		}
+	}
+
+	get rotations(): Position[] {
+		return [0, 1, 2, 3, 4, 5].map(n => this.rotate(n));
 	}
 
 	distance(target: Position): number {

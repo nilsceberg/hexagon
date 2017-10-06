@@ -5,8 +5,8 @@ import Player from "./Player";
 
 export enum CellOwner {
 	Own = 0,
-	None = 1,
-	Other = 2
+	Other = 1,
+	None = 2
 }
 
 export default class Cell {
@@ -32,12 +32,33 @@ export default class Cell {
 		}
 	}
 
+	transfer(from: Cell, amount: number) {
+		if (from.resources > amount) {
+			from.resources -= amount;
+			if (from.owner === this.owner) {
+				// TODO: check if there is actually a path
+				this.resources += amount;
+			}
+			else {
+				// TODO: check if cells are actually adjacent (can we do that as it stands?)
+				this.resources -= amount;
+				if (this.resources < 0) {
+					this.resources = -this.resources;
+					this.owner = from.owner;
+				}
+			}
+		}
+		else {
+			// TODO: illegal, I guess?
+		}
+	}
+
 	getColor(): [number, number, number] {
 		if (this.owner) {
 			return this.owner.color;
 		}
 		else {
-			return [255, 255, 255];
+			return [155, 155, 155];
 		}
 	}
 }

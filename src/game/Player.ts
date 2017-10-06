@@ -12,17 +12,27 @@ class Player {
 	color: [number, number, number];
 	strategy: Interface.Strategy;
 	exceptions: number = 0;
+	alive: boolean;
 
 	constructor(strategy: Interface.Strategy) {
 		this.id = uuid.v4();
 		const c = color.hsv(Math.random() * 360, 100, 100).rgb()
 		this.color = c.array() as [number, number, number];
+		this.alive = true;
 
 		this.strategy = strategy;
 	}
 
 	play(board: Board) {
+		if(!this.alive) {
+			return;
+		}
+
 		const boardState = this.prepareBoardState(board);
+		if(boardState.length === 0) {
+			this.alive = false;
+		}
+
 		const transaction = this.runStrategy(boardState);
 
 		if(transaction) {

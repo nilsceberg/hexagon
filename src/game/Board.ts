@@ -52,8 +52,20 @@ export default class Board {
 	}
 
 	placePlayers(players: Player[]) {
-		const cell = this.getCellAt(pos(0,0,0));
-		cell.owner = players[0];
+		this.placePlayer(players[0], pos(0,0,0));
+
+		if(players.length > 1) {
+			let position = pos(-4, 0, 4);
+			for(let i = 1; i < players.length && i < 7; ++i) {
+				this.placePlayer(players[i], position);
+				position = position.rotate();
+			}
+		}
+	}
+
+	private placePlayer(player: Player, position: Position) {
+		const cell = this.getCellAt(position);
+		cell.owner = player;
 		cell.resources = Constants.STARTING_RESOURCES;
 	}
 

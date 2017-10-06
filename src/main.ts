@@ -12,8 +12,11 @@ class Main {
 	async start() {
 		let renderer = new TerminalRenderer();
 
-		let testPlayer = new Player(AggressiveBot);
-		let game = new Game([testPlayer]);
+		let game = new Game([
+			new Player(AggressiveBot),
+			new Player(AggressiveBot),
+			new Player(AggressiveBot)
+		]);
 
 
 		await renderer.render(game.board);

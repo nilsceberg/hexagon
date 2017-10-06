@@ -1,5 +1,6 @@
 import Renderer from "./Renderer";
 import Board from "../game/Board";
+import Player from "../game/Player";
 import Cell from "../game/Cell";
 import pos, { Position } from "../game/Position";
 
@@ -15,6 +16,8 @@ export default class TerminalRenderer implements Renderer {
 	}
 
 	async render(board: Board): Promise<void> {
+		axel.cursor.off();
+
 		const boardSize = board.getMapSize();
 
 		const origin = this.toPixel(boardSize, 0, 0);
@@ -35,6 +38,7 @@ export default class TerminalRenderer implements Renderer {
 		}
 
 		axel.cursor.restore();
+		axel.cursor.on();
 	}
 
 	private async drawSide(
@@ -82,5 +86,26 @@ export default class TerminalRenderer implements Renderer {
 
 	private spaces(n: number): string {
 		return Array(n+1).join(" ");
+	}
+
+	displayPlayers(players: Player[]): void {
+		axel.cursor.off();
+		for(let i in players) {
+			const player = players[i];
+
+			if(player.alive) {
+				const [r, g, b] = player.color;
+				axel.bg(r, g, b);
+			}
+			else {
+				axel.bg(120, 120, 120);
+			}
+
+			axel.box(200, 10 + Number(i) * 4, 40, 3);
+			axel.fg(0,0,0);
+			axel.text(200 + 2, 10 + Number(i) * 4 + 1, `${player.name} (${player.exceptions} exceptions)`);
+		}
+		axel.cursor.restore();
+		axel.cursor.on();
 	}
 }

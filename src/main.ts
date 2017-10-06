@@ -15,7 +15,7 @@ class Main {
 		let renderer = new TerminalRenderer();
 
 		let game = new Game({
-			Aggressive: AggressiveBot,
+			//Aggressive: AggressiveBot,
 			noahshitbot: NoahBot,
 			TaconsLag: TacoBot,
 		});
@@ -25,9 +25,9 @@ class Main {
 		while(true) {
 			let winner = game.turn();
 			await renderer.render(game.board);
+			renderer.displayPlayers(game.players);
 
 			if(winner) {
-				console.log("Winner:", winner);
 				break;
 			}
 

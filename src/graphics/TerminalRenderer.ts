@@ -7,7 +7,7 @@ import * as axel from "axel";
 
 
 const BOX_HEIGHT = 3;
-const BOX_WIDTH = 13;
+const BOX_WIDTH = 11;
 
 export default class TerminalRenderer implements Renderer {
 	constructor() {
@@ -33,6 +33,8 @@ export default class TerminalRenderer implements Renderer {
 			hexagon = await this.drawSide(board, ring, hexagon, cartesianPosition, x => x.north,     { x:  0, y: -2 });
 			hexagon = await this.drawSide(board, ring, hexagon, cartesianPosition, x => x.northEast, { x:  1, y: -1 });
 		}
+
+		axel.cursor.restore();
 	}
 
 	private async drawSide(

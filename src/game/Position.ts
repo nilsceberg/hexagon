@@ -6,19 +6,23 @@ export class Position {
 	}
 
 	get x(): number {
-		return this.x;
+		return this._x;
 	}
 
 	get y(): number {
-		return this.x;
+		return this._y;
 	}
 
 	get z(): number {
-		return this.x;
+		return this._z;
 	}
 
 	add(x: number, y: number, z: number): Position {
 		return pos(this._x + x, this._y + y, this._z + z);
+	}
+
+	subtract(other: Position): Position {
+		return pos(this._x - other.x, this._y - other.y, this._z - other.z);
 	}
 
 	get north(): Position {
@@ -61,6 +65,19 @@ export class Position {
 			c: this._x,
 			r: this._y
 		};
+	}
+
+	rotate(n: number = 1): Position {
+		if (n === 0) {
+			return this;
+		}
+		else {
+			return pos(-this.z, -this.x, -this.y).rotate(n - 1);
+		}
+	}
+
+	distance(target: Position): number {
+		return (Math.abs(this.x - target.x) + Math.abs(this.y - target.y) + Math.abs(this.z - target.z)) / 2;
 	}
 
 	private _x: number;

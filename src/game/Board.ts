@@ -5,17 +5,17 @@ import pos, { Position } from "./Position";
 type MapData = {[c: number]: {[r: number]: Cell}};
 
 export default class Board {
-	private size: number;
+	private radius: number;
 	private map: MapData;
 	private idMap: {[uuid: string]: Cell};
 
-	constructor(size: number) {
-		this.size = size;
+	constructor(radius: number) {
+		this.radius = radius;
 
 		this.map = {};
 		this.idMap = {};
 
-		for(let c = 0; c <= size; ++c) {
+		for(let c = 0; c <= radius; ++c) {
 			this.fillColumn(c);
 			if (c > 0) {
 				this.fillColumn(-c);
@@ -25,10 +25,33 @@ export default class Board {
 
 	private fillColumn(c: number) {
 		this.map[c] = {};
-		for(let r = 0; r <= (this.size * 2 - c); ++r) {
+		for(let r = 0; r <= (this.radius * 2 - c); ++r) {
 			let cell = new Cell();
-			this.map[c][r - this.size] = cell;
+			this.map[c][r - this.radius] = cell;
 			this.idMap[cell.id] = cell;
+		}
+	}
+
+	get mirror(): Position {
+		return pos(
+			2 * this.radius + 1,
+			-this.radius,
+			-this.radius - 1
+		);
+	}
+
+	get mirrors(): Position[] {
+		return [0, 1, 2, 3, 4, 5].map(n => this.mirror.rotate(n));
+	}
+
+	wrap(position: Position): Position {
+		const enteredMirror = this.mirrors.find(center => center.distance(position) <= this.radius);
+
+		if (enteredMirror) {
+			return position.subtract(enteredMirror);
+		}
+		else {
+			return position;
 		}
 	}
 
@@ -41,11 +64,7 @@ export default class Board {
 		return this.idMap[id];
 	}
 
-	getMapData(): MapData {
-		return this.map;
-	}
-
 	getMapSize(): number {
-		return this.size;
+		return this.radius;
 	}
 }

@@ -17,36 +17,36 @@ export class Position {
 		return this._z;
 	}
 
-	add(x: number, y: number, z: number): Position {
-		return pos(this._x + x, this._y + y, this._z + z);
+	add(other: Position): Position {
+		return pos(this._x + other._x, this._y + other._y, this._z + other._z);
 	}
 
 	subtract(other: Position): Position {
-		return pos(this._x - other.x, this._y - other.y, this._z - other.z);
+		return pos(this._x - other._x, this._y - other._y, this._z - other._z);
 	}
 
 	get north(): Position {
-		return this.add(0, 1, -1);
+		return this.add(pos(0, 1, -1));
 	}
 
 	get northEast(): Position {
-		return this.add(1, 0, -1);
+		return this.add(pos(1, 0, -1));
 	}
 
 	get southEast(): Position {
-		return this.add(1, -1, 0);
+		return this.add(pos(1, -1, 0));
 	}
 
 	get south(): Position {
-		return this.add(0, -1, 1);
+		return this.add(pos(0, -1, 1));
 	}
 
 	get southWest(): Position {
-		return this.add(-1, 0, 1);
+		return this.add(pos(-1, 0, 1));
 	}
 
 	get northWest(): Position {
-		return this.add(-1, 1, 0);
+		return this.add(pos(-1, 1, 0));
 	}
 
 	get neighbours(): Position[] {

@@ -61,7 +61,7 @@ export default class TerminalRenderer implements Renderer {
 		const [r, g, b] = cell.getColor();
 		axel.bg(r, g, b);
 
-		axel.box(coords.x, coords.y, BOX_WIDTH, BOX_HEIGHT);
+		axel.box(coords.x + 1, coords.y + 1, BOX_WIDTH - 1, BOX_HEIGHT - 1);
 		axel.fg(0,0,0);
 		axel.bg(0,0,0);
 		axel.box(coords.x, coords.y, 1, BOX_HEIGHT);

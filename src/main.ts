@@ -19,13 +19,13 @@ class Main {
 		await renderer.render(game.board);
 		while(true) {
 			let winner = game.turn();
+			await renderer.render(game.board);
 
 			if(winner) {
 				console.log("Winner:", winner);
 				break;
 			}
 
-			await renderer.render(game.board);
 			await this.sleep(10);
 		}
 

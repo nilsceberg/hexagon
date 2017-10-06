@@ -6,8 +6,8 @@ import pos, { Position } from "../game/Position";
 import * as axel from "axel";
 
 
-const BOX_HEIGHT = 3;
-const BOX_WIDTH = 11;
+const BOX_HEIGHT = 6;
+const BOX_WIDTH = 12;
 
 export default class TerminalRenderer implements Renderer {
 	constructor() {
@@ -63,16 +63,20 @@ export default class TerminalRenderer implements Renderer {
 
 		axel.box(coords.x, coords.y, BOX_WIDTH, BOX_HEIGHT);
 		axel.fg(0,0,0);
+		axel.bg(0,0,0);
+		axel.box(coords.x, coords.y, 1, BOX_HEIGHT);
+		axel.box(coords.x, coords.y, BOX_WIDTH, 1);
 
+		axel.bg(r, g, b);
 		const label = cell.resources.toString();
-		axel.text(coords.x + BOX_WIDTH / 2 - label.length / 2, coords.y + 1, label);
+		axel.text(coords.x + BOX_WIDTH / 2 - label.length / 2 + 1, coords.y + 3, label);
 		axel.bg(0,0,0);
 	}
 
 	private toPixel(boardSize: number, x: number, y: number): { x: number, y: number } {
 		return {
 			x: (x + boardSize) * BOX_WIDTH + 20,
-			y: (y + boardSize * 2.2) * 1 * BOX_HEIGHT
+			y: ((y + boardSize * 2.2) * 1 * BOX_HEIGHT) / 2
 		};
 	}
 

@@ -17,21 +17,30 @@ export default class Board {
 		this.map = {};
 		this.idMap = {};
 
-		for(let c = 0; c <= radius; ++c) {
-			this.fillColumn(c);
-			if (c > 0) {
-				this.fillColumn(-c);
+		this.fill();
+	}
+
+	private fill() {
+		let position = pos(0,0,0);
+		this.putCell(position);
+		for(let ring = 1; ring <= this.radius; ++ring) {
+			position = position.north;
+			let sidePosition = position;
+			for(let hex = 0; hex < ring; ++hex) {
+				for(let p of sidePosition.rotations) {
+					this.putCell(p);
+				}
+				sidePosition = sidePosition.southEast;
 			}
 		}
 	}
 
-	private fillColumn(c: number) {
-		this.map[c] = {};
-		for(let r = 0; r <= (this.radius * 2 - c); ++r) {
-			let cell = new Cell();
-			this.map[c][r - this.radius] = cell;
-			this.idMap[cell.id] = cell;
-		}
+	private putCell(position: Position) {
+		const {c, r} = position.axial;
+		if(!this.map[c]) this.map[c] = {};
+		const cell = new Cell();
+		this.map[c][r] = cell;
+		this.idMap[cell.id] = cell;
 	}
 
 	get mirror(): Position {

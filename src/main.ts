@@ -34,7 +34,8 @@ class Main {
 			await this.sleep(10);
 		}
 
-		//process.stdin.on("data", () => { process.exit(0); });
+		let winner = game.turn();
+		renderer.displayPlayers(game.players);
 	}
 
 	private sleep(milliseconds: number): Promise<void> {

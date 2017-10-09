@@ -12,7 +12,7 @@ import { strategy as NoahBot } from "./strategy/bots/Noah";
 
 class Main {
 	async start() {
-		let renderer = new TerminalRenderer();
+		let renderer = new TerminalRenderer(3);
 
 		let game = new Game({
 			//Aggressive: AggressiveBot,
@@ -25,7 +25,7 @@ class Main {
 		while(true) {
 			let winner = game.turn();
 			await renderer.render(game.board);
-			renderer.displayPlayers(game.players);
+			renderer.displayPlayers(game.board.getMapSize(), game.players);
 
 			if(winner) {
 				break;
@@ -35,7 +35,7 @@ class Main {
 		}
 
 		let winner = game.turn();
-		renderer.displayPlayers(game.players);
+		renderer.displayPlayers(game.board.getMapSize(), game.players);
 	}
 
 	private sleep(milliseconds: number): Promise<void> {

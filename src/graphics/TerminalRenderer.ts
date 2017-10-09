@@ -7,11 +7,13 @@ import pos, { Position } from "../game/Position";
 import * as axel from "axel";
 
 
-const BOX_HEIGHT = 6;
-const BOX_WIDTH = 12;
+const BOX_SIZE = 3;
 
 export default class TerminalRenderer implements Renderer {
-	constructor() {
+	private boxSize: number;
+	
+	constructor(boxSize: number) {
+		this.boxSize = boxSize;
 		axel.clear();
 	}
 
@@ -65,22 +67,22 @@ export default class TerminalRenderer implements Renderer {
 		const [r, g, b] = cell.getColor();
 		axel.bg(r, g, b);
 
-		axel.box(coords.x + 1, coords.y + 1, BOX_WIDTH - 1, BOX_HEIGHT - 1);
+		axel.box(coords.x + 1, coords.y + 1, this.boxSize * 2 - 1, this.boxSize - 1);
 		axel.fg(0,0,0);
 		axel.bg(0,0,0);
-		axel.box(coords.x, coords.y, 1, BOX_HEIGHT);
-		axel.box(coords.x, coords.y, BOX_WIDTH, 1);
+		axel.box(coords.x, coords.y, 1, this.boxSize);
+		axel.box(coords.x, coords.y, this.boxSize * 2, 1);
 
 		axel.bg(r, g, b);
 		const label = cell.resources.toString();
-		axel.text(coords.x + BOX_WIDTH / 2 - label.length / 2 + 1, coords.y + 3, label);
+		axel.text(coords.x + this.boxSize - label.length / 2 + 1, coords.y + Math.floor(this.boxSize / 2), label);
 		axel.bg(0,0,0);
 	}
 
 	private toPixel(boardSize: number, x: number, y: number): { x: number, y: number } {
 		return {
-			x: (x + boardSize) * BOX_WIDTH + 20,
-			y: ((y + boardSize * 2.2) * 1 * BOX_HEIGHT) / 2
+			x: (x + boardSize) * this.boxSize * 2 + 10,
+			y: ((y + boardSize) * this.boxSize) / 2 + (boardSize * this.boxSize) / 2 + 5
 		};
 	}
 
@@ -88,7 +90,7 @@ export default class TerminalRenderer implements Renderer {
 		return Array(n+1).join(" ");
 	}
 
-	displayPlayers(players: Player[]): void {
+	displayPlayers(boardSize: number, players: Player[]): void {
 		axel.cursor.off();
 		for(let i in players) {
 			const player = players[i];
@@ -101,9 +103,9 @@ export default class TerminalRenderer implements Renderer {
 				axel.bg(120, 120, 120);
 			}
 
-			axel.box(200, 10 + Number(i) * 4, 40, 3);
+			axel.box(2 * boardSize * this.boxSize * 2 + 30, 10 + Number(i) * 4, 40, 3);
 			axel.fg(0,0,0);
-			axel.text(200 + 2, 10 + Number(i) * 4 + 1, `${player.name} (${player.exceptions} exceptions)`);
+			axel.text(2 * boardSize * this.boxSize * 2 + 32, 10 + Number(i) * 4 + 1, `${player.name} (${player.exceptions} exceptions)`);
 		}
 		axel.cursor.restore();
 		axel.cursor.on();

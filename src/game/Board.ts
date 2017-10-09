@@ -38,7 +38,7 @@ export default class Board {
 	private putCell(position: Position) {
 		const {c, r} = position.axial;
 		if(!this.map[c]) this.map[c] = {};
-		const cell = new Cell();
+		const cell = new Cell(position);
 		this.map[c][r] = cell;
 		this.idMap[cell.id] = cell;
 	}

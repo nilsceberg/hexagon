@@ -88,6 +88,12 @@ export class Position {
 		return (Math.abs(this.x - target.x) + Math.abs(this.y - target.y) + Math.abs(this.z - target.z)) / 2;
 	}
 
+	equals(other: Position): boolean {
+		return this._x === other._x
+			&& this._y === other._y
+			&& this._z === other._z;
+	}
+
 	private _x: number;
 	private _y: number;
 	private _z: number;

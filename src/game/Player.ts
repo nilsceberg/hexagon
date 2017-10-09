@@ -42,17 +42,26 @@ class Player {
 		}
 
 		const transaction = this.runStrategy(boardState);
-
-		if(transaction) {
-			board.getCell(transaction.toId).transfer(board.getCell(transaction.fromId), transaction.amountToTransfer);
-		}
+		this.issueTransaction(board, transaction);
 	}
 
 	private runStrategy(state: Interface.BoardState): Interface.Transaction {
 		try {
 			return this.strategy(state);
-		} catch(e) {
+		}
+		catch(e) {
 			this.exceptions++;
+		}
+	}
+
+	private issueTransaction(board: Board, transaction: Interface.Transaction): void {
+		if(transaction) {
+			try {
+				board.getCell(transaction.toId).transfer(board, board.getCell(transaction.fromId), transaction.amountToTransfer);
+			}
+			catch(e) {
+				this.exceptions++;
+			}
 		}
 	}
 

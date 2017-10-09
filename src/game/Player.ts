@@ -23,7 +23,7 @@ class Player {
 
 		//const c = color.hsv(Math.random() * 360, 100, 100).rgb()
 		//this.color = c.array() as [number, number, number];
-		this.color = color.hsv(360 * (playerNumber / totalPlayers), 100, 100).rgb().array() as [number, number, number];
+		this.color = color.hsv(360 * (playerNumber / totalPlayers) + 90, 100, 100).rgb().array() as [number, number, number];
 	}
 
 	toString(): string {
@@ -57,7 +57,7 @@ class Player {
 	private issueTransaction(board: Board, transaction: Interface.Transaction): void {
 		if(transaction) {
 			try {
-				board.getCell(transaction.toId).transfer(board, board.getCell(transaction.fromId), transaction.amountToTransfer);
+				board.getCell(transaction.fromId).transfer(board, board.getCell(transaction.toId), transaction.amountToTransfer);
 			}
 			catch(e) {
 				this.exceptions++;

@@ -2,6 +2,7 @@ import * as uuid from "uuid";
 
 import Player from "./Player";
 import Board from "./Board";
+import DepthFirst from "./pathfinding/DepthFirst";
 import { Position } from "./Position";
 
 
@@ -36,23 +37,27 @@ export default class Cell {
 		}
 	}
 
-	transfer(board: Board, from: Cell, amount: number) {
-		if (from.resources > amount) {
-			from.resources -= amount;
-			if (from.owner === this.owner) {
-				// TODO: check if there is actually a path
-				this.resources += amount;
+	transfer(board: Board, to: Cell, amount: number) {
+		if (this.resources > amount) {
+			if (this.owner === to.owner) {
+				const pathfinder = new DepthFirst();
+				if (!pathfinder.pathExists(board, this.position, to.position)) {
+					throw "cells are not connected";
+				}
+				this.resources -= amount;
+				to.resources += amount;
 			}
 			else {
-				// TODO: check if cells are actually adjacent (can we do that as it stands?)
-				if (!this.position.neighbours.find(p => board.wrap(p).equals(from.position))) {
+				if (!this.position.neighbours.find(p => board.wrap(p).equals(to.position))) {
 					throw "cells are not adjacent";
 				}
 
 				this.resources -= amount;
-				if (this.resources < 0) {
-					this.resources = -this.resources;
-					this.owner = from.owner;
+				to.resources -= amount;
+
+				if (to.resources < 0) {
+					to.resources = -to.resources;
+					to.owner = this.owner;
 				}
 			}
 		}

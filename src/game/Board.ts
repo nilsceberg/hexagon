@@ -66,11 +66,17 @@ export default class Board {
 	}
 
 	private placePlayer(player: Player, position: Position, randomStartResources: number[]) {
+		randomStartResources = randomStartResources.slice();
+
 		const cell = this.getCellAt(position);
 		cell.owner = player;
 		cell.resources = Constants.STARTING_RESOURCES;
+
+		// place random start resources into neighbouring neutral cells
 		cell.position.neighbours.map((p, i) => {
-			this.getCellAt(p).resources = randomStartResources[i];
+			this.getCellAt(p).resources = randomStartResources.splice(
+				Math.floor(Math.random() * randomStartResources.length), 1
+			)[0];
 		})
 	}
 

@@ -52,21 +52,26 @@ export default class Board {
 	}
 
 	placePlayers(players: Player[]) {
-		this.placePlayer(players[0], pos(0,0,0));
+		let randomStartResources = new Array(6).fill(0).map(n => Math.floor(Math.random() * 100));
+
+		this.placePlayer(players[0], pos(0,0,0), randomStartResources);
 
 		if(players.length > 1) {
 			let position = pos(-4, 0, 4);
 			for(let i = 1; i < players.length && i < 7; ++i) {
-				this.placePlayer(players[i], position);
+				this.placePlayer(players[i], position, randomStartResources);
 				position = position.rotate();
 			}
 		}
 	}
 
-	private placePlayer(player: Player, position: Position) {
+	private placePlayer(player: Player, position: Position, randomStartResources: number[]) {
 		const cell = this.getCellAt(position);
 		cell.owner = player;
 		cell.resources = Constants.STARTING_RESOURCES;
+		cell.position.neighbours.map((p, i) => {
+			this.getCellAt(p).resources = randomStartResources[i];
+		})
 	}
 
 	wrap(position: Position): Position {

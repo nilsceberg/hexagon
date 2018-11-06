@@ -3,6 +3,7 @@ import * as uuid from "uuid";
 import Player from "./Player";
 import Board from "./Board";
 import DepthFirst from "./pathfinding/DepthFirst";
+import VeryLazy from "./pathfinding/VeryLazy";
 import { Position } from "./Position";
 
 
@@ -40,7 +41,7 @@ export default class Cell {
 	transfer(board: Board, to: Cell, amount: number) {
 		if (this.resources > amount) {
 			if (this.owner === to.owner) {
-				const pathfinder = new DepthFirst();
+				const pathfinder = new VeryLazy();
 				if (!pathfinder.pathExists(board, this.position, to.position)) {
 					throw "cells are not connected";
 				}

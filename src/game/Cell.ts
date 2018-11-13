@@ -1,5 +1,6 @@
 import * as uuid from "uuid";
 
+import * as Constants from "./Constants";
 import Player from "./Player";
 import Board from "./Board";
 import DepthFirst from "./pathfinding/DepthFirst";
@@ -73,6 +74,12 @@ export default class Cell {
 		}
 		else {
 			return [155, 155, 155];
+		}
+	}
+
+	grow() {
+		if (this.resources < Constants.INTEREST_CAP) {
+			this.resources += Constants.INTEREST;
 		}
 	}
 }

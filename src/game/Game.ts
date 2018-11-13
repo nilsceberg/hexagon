@@ -26,7 +26,7 @@ export default class Game {
 			player.play(this.board);
 		}
 
-		this.applyInterest();
+		this.growCells();
 
 		return this.checkForWinner();
 	}
@@ -41,12 +41,10 @@ export default class Game {
 		return lastOwner;
 	}
 
-	private applyInterest() {
+	private growCells() {
 		let ownedCells = this.board.positions.map(p => this.board.getCellAt(p)).filter(c => c.owner !== null);
 		for(let cell of ownedCells) {
-			if (cell.resources < Constants.INTEREST_CAP) {
-				cell.resources += Constants.INTEREST;
-			}
+			cell.grow();
 		}
 	}
 }

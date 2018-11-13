@@ -4,18 +4,18 @@ export interface Transaction {
 	amountToTransfer: number;
 }
 
-export interface Cell {
+export interface MyCell {
 	resources: number;
-	neighbours: Neighbour[];
+	neighbours: NeighbourCell[];
 	id: string;
 }
 
-export interface Neighbour {
+export interface NeighbourCell {
 	owner: number;
 	resources: number;
 	id: string;
 }
 
-export type BoardState = Cell[];
+export type BoardState = MyCell[];
 
 export type Strategy = (state: BoardState) => Transaction;

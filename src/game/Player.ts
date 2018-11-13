@@ -69,12 +69,12 @@ class Player {
 		const myCellsPositions: Position[] = board.positions.filter(p => board.getCellAt(p).owner === this);
 		const boardState: Interface.BoardState = myCellsPositions.map(p => {
 			const cell = board.getCellAt(p);
-			return <Interface.Cell>{
+			return <Interface.MyCell>{
 				id: cell.id,
 				resources: cell.resources,
 				neighbours: p.neighbours.map(p => {
 					const cell = board.getCellAt(board.wrap(p));
-					return <Interface.Neighbour>{
+					return <Interface.NeighbourCell>{
 						id: cell.id,
 						resources: cell.resources,
 						owner: cell.getRelativeOwner(this)

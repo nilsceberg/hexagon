@@ -72,11 +72,13 @@ class Player {
 			return <Interface.MyCell>{
 				id: cell.id,
 				resources: cell.resources,
+				maxGrowth: cell.maxGrowth,
 				neighbours: p.neighbours.map(p => {
 					const cell = board.getCellAt(board.wrap(p));
 					return <Interface.NeighbourCell>{
 						id: cell.id,
 						resources: cell.resources,
+						maxGrowth: cell.maxGrowth,
 						owner: cell.getRelativeOwner(this)
 					};
 				})

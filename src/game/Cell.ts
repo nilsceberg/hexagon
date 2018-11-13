@@ -19,12 +19,14 @@ export default class Cell {
 	resources: number;
 	owner: Player;
 	position: Position;
+	maxGrowth: number;
 
 	constructor(position: Position) {
 		this.id = uuid.v4();
 		this.position = position;
 		this.resources = 0;
 		this.owner = null;
+		this.maxGrowth = Constants.INTEREST_CAP;
 	}
 
 	getRelativeOwner(to: Player): CellOwner {
@@ -78,7 +80,7 @@ export default class Cell {
 	}
 
 	grow() {
-		if (this.resources < Constants.INTEREST_CAP) {
+		if (this.resources < this.maxGrowth) {
 			this.resources += Constants.INTEREST;
 		}
 	}
